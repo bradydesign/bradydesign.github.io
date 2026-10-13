@@ -301,6 +301,9 @@ b { font-weight: 600; }
 .r-3x2  { aspect-ratio: 3 / 2; }
 .r-4x5  { aspect-ratio: 4 / 5; }
 .r-1x1  { aspect-ratio: 1 / 1; }
+.r-9x16 { aspect-ratio: 9 / 16; }
+/* 竖版视频：居中、限制高度 */
+.gallery > .full:has(.r-9x16) { justify-self: center; width: min(100%, calc(84svh * 9 / 16)); }
 
 .media--natural.is-loaded { aspect-ratio: auto; }
 .media--natural.is-loaded > img { position: static; height: auto; }
