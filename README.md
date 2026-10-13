@@ -6,6 +6,6 @@
 
 ## 设计说明
 
-- 瑞士网格 / 大字排版：12 栏网格（手机端 4 栏），配色仅白、黑与强调红 `#E10600`。样式见 `assets/css/style.css`。
-- 英文字体 Inter Tight，取自 npm 包 `@fontsource-variable/inter-tight`（OFL-1.1），自托管于 `assets/fonts/`，不依赖 Google Fonts；中文使用系统字体。
-- 交互脚本 `assets/js/main.js`（原生 JS，无第三方库）：大标题自动铺满行宽、IntersectionObserver 滚动揭开、首页索引悬停封面预览；遵循 `prefers-reduced-motion`。
+- 杂志版式：12 栏网格（手机端 4 栏），衬线标题、细线分隔与图注；配色仅白、黑与强调红 `#E10600`。样式见 `assets/css/style.css`。
+- 英文字体 Instrument Serif（标题）与 Inter Tight（正文 / 标签），取自 npm 包 `@fontsource/instrument-serif`、`@fontsource-variable/inter-tight`（均为 OFL-1.1），自托管于 `assets/fonts/`，不依赖 Google Fonts；中文使用系统宋体 / 黑体。
+- 交互脚本 `assets/js/main.js`（原生 JS，无第三方库）：IntersectionObserver 滚动滑入 / 图片揭开、页脚署名铺满行宽；遵循 `prefers-reduced-motion`。
