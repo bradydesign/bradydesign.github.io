@@ -230,14 +230,14 @@ b { font-weight: 600; }
 /* ---------- 首页 ---------- */
 
 .hero {
-  padding-top: clamp(40px, 7vw, 120px);
-  padding-bottom: clamp(56px, 8vw, 128px);
+  padding-top: clamp(28px, 3.6vw, 64px);
+  padding-bottom: clamp(32px, 3.6vw, 64px);
 }
-.hero .display { margin-top: clamp(24px, 3vw, 44px); }
+.hero .display { margin-top: clamp(16px, 2vw, 28px); }
 .ln-indent { padding-left: calc((100% + var(--gap)) / 12 * 2); }
 
 .hero-meta {
-  margin-top: clamp(48px, 6vw, 96px);
+  margin-top: clamp(28px, 3vw, 48px);
   font-size: 14px;
   counter-reset: meta;
 }
@@ -249,19 +249,19 @@ b { font-weight: 600; }
 }
 .hero-meta li::before {
   content: counter(meta, lower-roman) ".";
-  display: block;
+  display: inline-block;
+  min-width: 2.2em;
   font-family: var(--serif);
   font-style: italic;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
-  margin-bottom: 14px;
 }
 
 .section-head {
   align-items: baseline;
   border-top: 1px solid var(--black);
   padding-top: 12px;
-  margin-bottom: clamp(36px, 5vw, 72px);
+  margin-bottom: clamp(20px, 2vw, 32px);
 }
 .section-head > :first-child { grid-column: 1 / span 6; }
 .section-head > :last-child {
