@@ -240,6 +240,11 @@ b { font-weight: 600; }
 .idx .card { grid-column: span 2; }
 .idx:not(.idx--feature) .card:nth-child(5n+2) { grid-column: span 4; }
 .idx:not(.idx--feature) .card:nth-child(5n+2) .media { aspect-ratio: 16 / 10; }
+/* 最后一行只剩一张时，放大为 2/3 宽，避免右侧空缺 */
+@media (min-width: 1101px) {
+  .idx:not(.idx--feature) .card:last-child:nth-child(5n+1) { grid-column: span 4; }
+  .idx:not(.idx--feature) .card:last-child:nth-child(5n+1) .media { aspect-ratio: 16 / 10; }
+}
 
 .idx a { display: block; }
 .idx:not(.idx--feature) .media img { transition: opacity .3s; }
