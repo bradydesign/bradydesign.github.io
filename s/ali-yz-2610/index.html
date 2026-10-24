@@ -30,7 +30,7 @@ header .meta{font-size:12.5px;color:var(--sub)}
 .hint{max-width:1200px;margin:14px auto 0;font-size:13px;color:var(--sub);display:none}
 main{max-width:1200px;margin:20px auto 0;display:flex;flex-direction:column;gap:24px}
 figure{margin:0;display:flex;flex-direction:column;gap:8px}
-.slide{position:relative;width:100%;aspect-ratio:16/9;border-radius:6px;overflow:hidden;cursor:zoom-in;
+.slide{position:relative;background-image:linear-gradient(90deg,var(--frame),var(--line),var(--frame));width:100%;aspect-ratio:16/9;border-radius:6px;overflow:hidden;cursor:zoom-in;
   background-color:var(--frame);background-size:cover;background-position:center;box-shadow:0 8px 26px var(--shadow)}
 .slide::after{content:"";position:absolute;inset:0}
 .toggle{position:absolute;z-index:2;top:10px;right:10px;display:flex;padding:3px;gap:3px;border-radius:999px;background:var(--chip);box-shadow:0 3px 12px rgba(0,0,0,.25)}
@@ -87,7 +87,10 @@ footer{max-width:1200px;margin:28px auto 0;font-size:12px;color:var(--sub);line-
   var pages=[1,2,3,4,5,6,7,8,9,10,11,12,'A','B',17,18];
   var pair={A:{day:13,night:14,label:'效果图 · 立面 A'},B:{day:15,night:16,label:'效果图 · 立面 B'}};
   var mode={A:'day',B:'day'};
-  function src(n){return 'p/p-'+(n<10?'0':'')+n+'.jpg'}
+  var webp=(function(){try{return document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp')===0}catch(e){return false}})();
+  var small=window.innerWidth<=700||Math.min(window.innerWidth,1200)*(window.devicePixelRatio||1)<=1100;
+  function base(n){return 'p/p-'+(n<10?'0':'')+n}
+  function src(n,big){if(!webp)return base(n)+'.jpg';return base(n)+((small&&!big)?'-s':'')+'.webp'}
   function pageNum(i){var p=pages[i];return typeof p==='number'?p:pair[p][mode[p]]}
   var deck=document.getElementById('deck'), slides=[];
   pages.forEach(function(p,i){
@@ -106,16 +109,21 @@ footer{max-width:1200px;margin:28px auto 0;font-size:12px;color:var(--sub);line-
       s.appendChild(t);
       var c=document.createElement('figcaption'); c.textContent=cfg.label+'：点右上角按钮切换白天 / 夜晚';
       fig.appendChild(c);
-      var pre=new Image(); pre.src=src(cfg.night);
     }
     s.addEventListener('click',function(){openViewer(i)});
     s.addEventListener('keydown',function(e){if(e.key==='Enter')openViewer(i)});
     deck.appendChild(fig);
-    paint(i);
   });
+  var seen={};
+  function load(i){if(seen[i])return;seen[i]=1;paint(i);var p=pages[i];if(typeof p!=='number'){var pre=new Image();pre.src=src(pair[p].night)}}
+  load(0);load(1);
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=slides.indexOf(e.target);load(i);if(i+1<slides.length)load(i+1);io.unobserve(e.target)}})},{rootMargin:'600px 0px'});
+    slides.forEach(function(s){io.observe(s)});
+  } else slides.forEach(function(s,i){load(i)});
   function paint(i){slides[i].style.backgroundImage='url("'+src(pageNum(i))+'")'}
   function setMode(p,m){
-    mode[p]=m; var i=pages.indexOf(p); paint(i);
+    mode[p]=m; var i=pages.indexOf(p); seen[i]=1; paint(i);
     slides[i].querySelectorAll('.toggle button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===m?'true':'false')});
     if(cur===i) showViewer();
   }
@@ -128,7 +136,8 @@ footer{max-width:1200px;margin:28px auto 0;font-size:12px;color:var(--sub);line-
   }
   function showViewer(){
     var p=pages[cur];
-    vimg.style.backgroundImage='url("'+src(pageNum(cur))+'")';
+    vimg.style.backgroundImage='url("'+src(pageNum(cur),true)+'")';
+    if(cur+1<pages.length){var nx=new Image();nx.src=src(pageNum(cur+1),true)}
     document.getElementById('vtitle').textContent=(cur+1)+' / '+pages.length;
     var isPair=typeof p!=='number'; vday.hidden=!isPair; vnight.hidden=!isPair;
     if(isPair){vday.setAttribute('aria-pressed',mode[p]==='day');vnight.setAttribute('aria-pressed',mode[p]==='night')}
